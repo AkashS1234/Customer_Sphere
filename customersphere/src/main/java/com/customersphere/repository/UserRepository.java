@@ -1,7 +1,7 @@
 package com.customersphere.repository;
 
 import com.customersphere.entity.User;
-import com.customersphere.entity.User.Role;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,9 +13,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Find a user by email
     Optional<User> findByEmail(String email);
+    Optional<User> findByName(String username );
 
     // Find users by role
-    List<User> findByRole(Role role);
+    List<User> findByRole(String role);
 
     // Check if a user exists by email
     boolean existsByEmail(String email);

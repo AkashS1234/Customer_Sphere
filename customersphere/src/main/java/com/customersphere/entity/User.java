@@ -7,11 +7,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User implements org.springframework.security.core.userdetails.UserDetails {
 
+    private  String token;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,23 +35,38 @@ public class User implements org.springframework.security.core.userdetails.UserD
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be valid")
     private String phone;
 
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private String role;
 
     // Default Constructor
     public User() {}
 
     // Parameterized Constructor
-    public User(String email, String password, String name, String phone, Role role) {
+    public User(String token, Long id,String email, String password, String name, String phone, String role) {
+        this.token = token;
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.role = role;
+
     }
 
+
+
+
     // Getters and Setters
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public Long getId() {
         return id;
     }
@@ -90,18 +107,19 @@ public class User implements org.springframework.security.core.userdetails.UserD
         this.phone = phone;
     }
 
-    public Role getRole() {
+    public  String  getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
     @Override
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Adding "ROLE_" prefix to the role name as expected by Spring Security
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role ));
     }
 
     @Override
@@ -130,7 +148,7 @@ public class User implements org.springframework.security.core.userdetails.UserD
     }
 
     // Role Enum for user roles
-    public enum Role {
-        ADMIN, CUSTOMER
-    }
+//    public enum Role {
+//        ADMIN, CUSTOMER
+//    }
 }
